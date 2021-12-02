@@ -43,7 +43,7 @@ arguments <- commandArgs(trailingOnly = TRUE)
 # arguments[1] = "/Users/lisahopcroft/Work/Projects/PINCER/pincer-measures/output/test/"
 # arguments[2] = "r_intermediate_1.RData"
 # arguments[3] = "test_output.csv"
-# arguments[4] = "/Users/lisahopcroft/Work/Projects/PINCER/pincer-measures/analysis/change_detection/"
+# arguments[4] = getwd()
 # arguments[5] = "up"
 # arguments[6] = "yes"
 
@@ -490,7 +490,7 @@ for (i in 1:(vars.list))
   } ## if there are breaks closed
   
   #### Save analysis plots      
-  if (saveplots_analysis){
+  if (saveplots_analysis) {# & nbreak>0){
     filename <- paste(fig_path_tis_analysis, results$name[i], ".png", sep="")
     wid <- 500
     hei <- 500
