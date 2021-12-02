@@ -3,6 +3,13 @@ print("Change detection running...")
 ##### Retrive arguments from Python command
 arguments <- commandArgs(trailingOnly = TRUE)
 
+# if ( FALSE ) {
+#   arguments[1] = "output/indicator_saturation/indicator_saturation_down_a"
+#   arguments[2] = "r_input_2.csv"
+#   arguments[3] = "r_intermediate_2.RData"
+#   arguments[4] = "/workspace/analysis/change_detection"
+# }
+
 #rm(list = ls())  #clear the workspace
 setwd(arguments[1]) ### Set working directory
 
@@ -19,7 +26,9 @@ library(gets) ### main package for break detection - see Pretis, Reade, and Suca
 plot_show <- FALSE ###show plots during break detection
 
 #### Break detection calibration
-p_alpha <- 0.000001 ## level of significance for the detection of breaks (main calibration choice)
+# p_alpha <- 0.000001 ## level of significance for the detection of breaks (main calibration choice)
+p_alpha <- 0.001 ## level of significance for the detection of breaks (main calibration choice)
+
 
 ### Computational
 parallel <- NULL ### set as integer (=number of cores-1) if selection should run in parallel (may increase speed for longer time series)
@@ -71,7 +80,9 @@ withCallingHandlers({
                          iis = FALSE,
                          plot=plot_show,
                          parallel.options = parallel,
-                         max.block.size = 15)
+                         ratio.threshold = 0.3,
+                         max.block.size = 15
+                         )
     } else {
       ### Create missing value indicator
       m <- is.na(y)
@@ -86,6 +97,7 @@ withCallingHandlers({
                          iis = FALSE,
                          plot=plot_show,
                          parallel.options = parallel,
+                         ratio.threshold = 0.3,
                          max.block.size = 12,
                          mxreg = m)
     }
