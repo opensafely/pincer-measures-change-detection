@@ -490,7 +490,7 @@ for (i in 1:(vars.list))
   } ## if there are breaks closed
   
   #### Save analysis plots      
-  if (saveplots_analysis) & nbreak>0){
+  if (saveplots_analysis) {# & nbreak>0){
     filename <- paste(fig_path_tis_analysis, results$name[i], ".png", sep="")
     wid <- 500
     hei <- 500
