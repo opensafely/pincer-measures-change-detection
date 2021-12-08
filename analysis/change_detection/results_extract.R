@@ -490,8 +490,14 @@ for (i in 1:(vars.list))
   } ## if there are breaks closed
   
   #### Save analysis plots      
-  if (saveplots_analysis) {# & nbreak>0){
+  if ( ( saveplots_analysis & ( nbreak>0 | (i %% 10 == 0) ) ) ) {
     filename <- paste(fig_path_tis_analysis, results$name[i], ".png", sep="")
+
+    if ( ! nbreak > 0 ) {
+      cat(sprintf( "\n !!! Printing no-breaks plot \n" ) )
+      filename <- paste(fig_path_tis_analysis, results$name[i], "_NOBREAKS.png", sep = "")
+    }
+
     wid <- 500
     hei <- 500
     png(filename)
