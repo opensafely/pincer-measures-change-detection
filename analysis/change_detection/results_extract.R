@@ -104,6 +104,9 @@ results$is.intlev.finallev <- NA ### End level
 results$is.intlev.levd <- NA ### Difference between pre and end level
 results$is.intlev.levdprop <- NA ### Proportion of drop
 
+### Storing coefficients
+coefficients_columns = c( "id", "tis", "coef", "se", "rel.coef", "t.val", "p.val", "time" )
+coefficients_holder = data.frame()
 
 ########################################
 ############### Objects to save to draw graphs
@@ -143,11 +146,18 @@ for (i in 1:(vars.list))
   
   ###coefficient path 
   tis.path <- trend.var(islstr.res)
-  
+
   results$is.nbreak.neg[i] = sum(tis.path$indic.fit$coef < 0)
   results$is.nbreak.pos[i] = sum(tis.path$indic.fit$coef > 0)
   
   if ( !is.null( tis.path$coef.var ) ) {
+    coefficients_tosave = tis.path$coef.var
+    coefficients_tosave$id = names.rel[i]
+    coefficients_tosave = coefficients_tosave[, coefficients_columns ]
+
+    coefficients_holder = coefficients_holder %>% 
+      bind_rows( coefficients_tosave )
+
     results$breaks.loc.pos[i] = list( tis.path$coef.var %>%
                                         arrange( tis ) %>% 
                                         filter( coef>0 ) %>%
@@ -551,6 +561,13 @@ write.table(plotdata_holder,
             sep=",", 
             row.names = FALSE,
             col.names = !file.exists(arguments[3]),
+            append=TRUE)
+
+write.table(coefficients_holder,
+            file = "coefficients_data.csv", 
+            sep=",", 
+            row.names = FALSE,
+            col.names = !file.exists("coefficients_data.csv"),
             append=TRUE)
 
 print("Done extracting results")
