@@ -199,6 +199,7 @@ actions:
       moderately_sensitive:
         out_csv: output/indicator_saturation/indicator_saturation_*_ac/summary_output.csv
         plot_csv: output/indicator_saturation/indicator_saturation_*_ac/plot_data.csv
+        coef_csv: output/indicator_saturation/indicator_saturation_*_ac/coefficients_data.csv
         plot_png: output/indicator_saturation/indicator_saturation_*_ac/figures/*.png
 
   indicator_saturation_me_no_fbc:
@@ -208,6 +209,7 @@ actions:
       moderately_sensitive:
         out_csv: output/indicator_saturation/indicator_saturation_*_me_no_fbc/summary_output.csv
         plot_csv: output/indicator_saturation/indicator_saturation_*_me_no_fbc/plot_data.csv
+        coef_csv: output/indicator_saturation/indicator_saturation_*_me_no_fbc/coefficients_data.csv
         plot_png: output/indicator_saturation/indicator_saturation_*_me_no_fbc/figures/*.png
         
   indicator_saturation_me_no_lft:
@@ -217,6 +219,7 @@ actions:
       moderately_sensitive:
         out_csv: output/indicator_saturation/indicator_saturation_*_me_no_lft/summary_output.csv
         plot_csv: output/indicator_saturation/indicator_saturation_*_me_no_lft/plot_data.csv
+        coef_csv: output/indicator_saturation/indicator_saturation_*_me_no_lft/coefficients_data.csv
         plot_png: output/indicator_saturation/indicator_saturation_*_me_no_lft/figures/*.png
 
   indicator_saturation_li:
@@ -226,6 +229,7 @@ actions:
       moderately_sensitive:
         out_csv: output/indicator_saturation/indicator_saturation_*_li/summary_output.csv
         plot_csv: output/indicator_saturation/indicator_saturation_*_li/plot_data.csv
+        coef_csv: output/indicator_saturation/indicator_saturation_*_li/coefficients_data.csv
         plot_png: output/indicator_saturation/indicator_saturation_*_li/figures/*.png
 
   indicator_saturation_am:
@@ -235,6 +239,7 @@ actions:
       moderately_sensitive:
         out_csv: output/indicator_saturation/indicator_saturation_*_am/summary_output.csv
         plot_csv: output/indicator_saturation/indicator_saturation_*_am/plot_data.csv
+        coef_csv: output/indicator_saturation/indicator_saturation_*_am/coefficients_data.csv
         plot_png: output/indicator_saturation/indicator_saturation_*_am/figures/*.png
 
   combine_indicator_saturation_data:
