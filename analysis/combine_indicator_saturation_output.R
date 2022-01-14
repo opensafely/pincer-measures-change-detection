@@ -239,6 +239,66 @@ for ( results_i in 1:nrow( plotdata_files ) ) {
 date_mapping = plotdata_holder %>% pull( x ) %>% unique() %>% sort
 COVID_start =  which(date_mapping=="2020-03-01") 
 
+
+#####################################################################
+### STEP 3: PLOTTING BREAK MAGNITUDE OVER TIME
+#####################################################################
+
+coefficient_files = data.frame(
+  file_name = list.files(path=in_dir, pattern="coefficients_data.csv$", recursive = TRUE )
+) %>%
+  mutate( file_name_full = paste( in_dir, file_name, sep="/" ) ) %>% 
+  mutate( indicator = dirname( file_name ) ) %>% 
+  mutate( direction = indicator %>% str_replace("indicator_saturation_", "") %>% str_replace( "_.*", "" )) %>% 
+  mutate( indicator_string = indicator %>% str_replace( glue("indicator_saturation_{direction}_"), "" )) %>%
+  mutate( id = 1:n() )
+
+coefficients_holder = data.frame()
+
+fig_path_tis_analysis = out_dir
+
+###### Timing Measures
+
+for ( coefficients_i in 1:nrow( coefficient_files ) ) {
+    
+  cat( coefficients_i )
+  cat( this_result_file )
+
+  this_result_file = ( coefficient_files %>% pull(file_name_full) )[coefficients_i]
+  this_indicator = ( coefficient_files %>% pull(indicator_string) )[coefficients_i]
+  this_direction = ( coefficient_files %>% pull(direction) )[coefficients_i]
+  this_object = basename( this_result_file )
+  
+  cat( glue("[{coefficients_i}] Reading data from {this_indicator} // {this_direction} // {this_object}\n\n"))
+  
+  if ( file.info(this_result_file)$size > 0 ) {
+  
+  these_results = readr::read_csv(this_result_file, comment="\"\"") %>% 
+    filter( id != "id" ) %>%
+    mutate( coef = as.numeric(coef) ) %>%
+    mutate( se = as.numeric(se) ) %>%
+    mutate( rel.coef = as.numeric(rel.coef) ) %>%
+    mutate( t.val = as.numeric(t.val) ) %>%
+    mutate( p.val = as.numeric(p.val) ) %>%
+    mutate( time = as.numeric(time) ) %>%
+    mutate( indicator = this_indicator ) %>% 
+    mutate( direction = this_direction ) 
+  
+  coefficients_holder = coefficients_holder %>% 
+    bind_rows( these_results )
+  
+  }
+
+}
+
+coefficients_toplot = coefficients_holder  %>% 
+  select( -direction )  %>% 
+  mutate( month = date_mapping[ time ] ) %>% 
+  unique()
+
+write.csv( coefficients_toplot,
+           file=glue("{out_dir}/all-coefficients.csv"))
+
 # save( results_holder,
 #       plotdata_holder,
 #       file = glue("{fig_path_tis_analysis}/ANALYSIS_OUTPUT.RData") )
