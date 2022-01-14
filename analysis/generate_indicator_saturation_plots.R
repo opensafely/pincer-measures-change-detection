@@ -269,3 +269,131 @@ for ( this_indicator in break_matrix.d_in %>% pull( indicator ) %>% unique ) {
 # }
 
 
+coefficients.d_in = read.csv( glue("{out_dir}/all-coefficients.csv") )
+coefficients.d = coefficients.d_in %>% 
+  select( -X ) %>% 
+  mutate( direction = ifelse( rel.coef<0, "neg", "pos" ) ) %>% 
+  mutate( month = ymd( month ) ) %>% 
+  mutate( plot_group = glue("{month}_{direction}"))
+
+###
+### Summarise break magnitudes as boxplots
+###
+
+ggplot( coefficients.d,
+        aes( x=month,
+             y=rel.coef,
+             group = plot_group,
+             fill = direction,
+             colour=direction ) ) + 
+  geom_boxplot( outlier.size=NA, alpha=0.2 ) + geom_jitter( width=0.01 ) +
+  scale_fill_manual( values=colour_scheme ) +
+  scale_colour_manual( values=colour_scheme ) +
+  geom_vline( xintercept = ymd("2020-03-01"),
+              colour="orange",
+              linetype="dashed") +
+  scale_x_date( date_labels = "%b %y", breaks = xbreaks ) +
+  labs( title= "Break magnitude per month",
+        x = "Month",
+        y = "Number of practices with positive break identified in this month" ) +
+  theme_bw() +
+  theme( axis.text.x = element_text(angle=90, hjust = 1, vjust=0.5)) +
+  facet_wrap( ~indicator )
+
+ggsave(glue("{out_dir}/BREAK-MAGNITUDE_boxplot_all.png"), width = 6, height = 6)
+
+
+for ( this_indicator in coefficients.d %>% pull( indicator ) %>% unique ) { 
+  
+  num_practices = break_matrix.d_in %>% 
+    filter( indicator == this_indicator ) %>%
+    pull( name ) %>% unique %>% length
+  
+  this_coefficients.d = coefficients.d %>%
+    filter( indicator == this_indicator )
+
+  ggplot( this_coefficients.d,
+        aes( x=month,
+             y=rel.coef,
+             group = plot_group,
+             fill = direction,
+             colour=direction ) ) + 
+  geom_boxplot( outlier.size=NA, alpha=0.2 ) + geom_jitter( width=0.01 ) +
+  scale_fill_manual( values=colour_scheme ) +
+  scale_colour_manual( values=colour_scheme ) +
+  geom_vline( xintercept = ymd("2020-03-01"),
+              colour="orange",
+              linetype="dashed") +
+  scale_x_date( date_labels = "%b %y", breaks = xbreaks ) +
+  labs( title= glue("Break magnitude per month for {this_indicator} \\
+                ({num_practices} practices, {num_timepoints} timepoints)"),
+        x = "Month",
+        y = "Break magnitude" ) +
+  theme_bw() +
+  theme( axis.text.x = element_text(angle=90, hjust = 1, vjust=0.5)) +
+  facet_wrap( ~indicator )
+  
+  ggsave(glue("{out_dir}/BREAK-MAGNITUDE_boxplot_{this_indicator}.png"), width = 8, height = 4)
+  
+}
+
+###
+### Summarise break magnitudes as boxplots
+###
+
+ggplot( coefficients.d,
+        aes( x=month,
+             y=rel.coef,
+             group = plot_group,
+             fill = direction,
+             colour=direction ) ) + 
+  geom_violin( outlier.size=NA, alpha=0.2 ) + geom_jitter( width=0.01 ) +
+  scale_fill_manual( values=colour_scheme ) +
+  scale_colour_manual( values=colour_scheme ) +
+  geom_vline( xintercept = ymd("2020-03-01"),
+              colour="orange",
+              linetype="dashed") +
+  scale_x_date( date_labels = "%b %y", breaks = xbreaks ) +
+  labs( title= "Break magnitude per month",
+        x = "Month",
+        y = "Number of practices with positive break identified in this month" ) +
+  theme_bw() +
+  theme( axis.text.x = element_text(angle=90, hjust = 1, vjust=0.5)) +
+  facet_wrap( ~indicator )
+
+ggsave(glue("{out_dir}/BREAK-MAGNITUDE_violin_all.png"), width = 6, height = 6)
+
+
+for ( this_indicator in coefficients.d %>% pull( indicator ) %>% unique ) { 
+  
+  num_practices = break_matrix.d_in %>% 
+    filter( indicator == this_indicator ) %>%
+    pull( name ) %>% unique %>% length
+  
+  this_coefficients.d = coefficients.d %>%
+    filter( indicator == this_indicator )
+
+  ggplot( this_coefficients.d,
+        aes( x=month,
+             y=rel.coef,
+             group = plot_group,
+             fill = direction,
+             colour=direction ) ) + 
+  geom_violin( outlier.size=NA, alpha=0.2 ) + geom_jitter( width=0.01 ) +
+  scale_fill_manual( values=colour_scheme ) +
+  scale_colour_manual( values=colour_scheme ) +
+  geom_vline( xintercept = ymd("2020-03-01"),
+              colour="orange",
+              linetype="dashed") +
+  scale_x_date( date_labels = "%b %y", breaks = xbreaks ) +
+  labs( title= glue("Break magnitude per month for {this_indicator} \\
+                ({num_practices} practices, {num_timepoints} timepoints)"),
+        x = "Month",
+        y = "Break magnitude" ) +
+  theme_bw() +
+  theme( axis.text.x = element_text(angle=90, hjust = 1, vjust=0.5)) +
+  facet_wrap( ~indicator )
+  
+  ggsave(glue("{out_dir}/BREAK-MAGNITUDE_violin_{this_indicator}.png"), width = 8, height = 4)
+  
+}

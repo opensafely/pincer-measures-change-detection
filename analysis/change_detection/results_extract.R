@@ -567,7 +567,7 @@ write.table(coefficients_holder,
             file = "coefficients_data.csv", 
             sep=",", 
             row.names = FALSE,
-            col.names = !file.exists("coefficients_data.csv"),
+            col.names = TRUE,
             append=TRUE)
 
 print("Done extracting results")
