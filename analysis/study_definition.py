@@ -121,6 +121,26 @@ study = StudyDefinition(
             },
         },
     ),
+    rural_urban=patients.address_as_of(
+        "index_date",
+        returning="rural_urban_classification",
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "0": 0.025,
+                    "1": 0.2,
+                    "2": 0.05,
+                    "3": 0.5,
+                    "4": 0.05,
+                    "5": 0.1,
+                    "6": 0.025,
+                    "7": 0.025,
+                    "8": 0.025,
+                }
+            },
+        },
+    ),
     imd=patients.categorised_as(
         {
             "0": "DEFAULT",
