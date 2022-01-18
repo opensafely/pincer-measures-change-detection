@@ -121,6 +121,50 @@ study = StudyDefinition(
             },
         },
     ),
+    practice_deprivation_pctile=patients.registered_practice_as_of(
+        "index_date",
+        returning="rct__germdefence__deprivation_pctile",
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {"1": 0.5, "2": 0.5},
+            },
+        },
+    ),
+    practice_imd_decile=patients.registered_practice_as_of(
+        "index_date",
+        returning="rct__germdefence__imd_decile",
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {"1": 0.5, "2": 0.5},
+            },
+        },
+    ),
+    practice_mean_age=patients.registered_practice_as_of(
+        "index_date",
+        returning="rct__germdefence__mean_age",
+        return_expectations={
+            "rate": "universal",
+            "int": {"distribution": "population_ages"},
+        },
+    ),
+    practice_median_age=patients.registered_practice_as_of(
+        "index_date",
+        returning="rct__germdefence__median_age",
+        return_expectations={
+            "rate": "universal",
+            "int": {"distribution": "population_ages"},
+        },
+    ),
+    practice_total_visit_time_mean=patients.registered_practice_as_of(
+        "index_date",
+        returning="rct__germdefence__total_visit_time_mean",
+        return_expectations={
+            "rate": "universal",
+            "int": {"distribution": "normal", "mean": 6, "stddev": 3},
+        },
+    ),
     rural_urban=patients.address_as_of(
         "index_date",
         returning="rural_urban_classification",
