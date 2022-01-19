@@ -270,7 +270,7 @@ actions:
   #       breakmagnitude_plots: output/indicator_saturation/combined/BREAK-MAGNITUDE_*.png
 
   calculate_measure_summaries_for_ISPO:
-    run: r:latest analysis/ISPO_get-sim-data-info.R output "measure_indicator_(.*)_rate.csv" output/indicator_saturation/simulated-data
+    run: r:latest analysis/ISPO_get-sim-data-info.R output "measure_indicator_(.*)_rate.csv" output/indicator_saturation
     needs: [generate_measures]
     outputs:
       moderately_sensitive:
