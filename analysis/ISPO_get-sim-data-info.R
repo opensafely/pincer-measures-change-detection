@@ -72,5 +72,5 @@ if ( !dir.exists( output_dir ) ) {
   dir.create(output_dir, showWarnings = FALSE)
 }
 
-readr::write_csv(measure_monthly_summary  , glue("{output_dir}/ISPO_sim-data-info_monthly.csv"  ))
-readr::write_csv(measure_quarterly_summary, glue("{output_dir}/ISPO_sim-data-info_quarterly.csv"))
+write.csv(measure_monthly_summary  , file=glue("{output_dir}/ISPO_sim-data-info_monthly.csv"  ))
+write.csv(measure_quarterly_summary, file=glue("{output_dir}/ISPO_sim-data-info_quarterly.csv"))
