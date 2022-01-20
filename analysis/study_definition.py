@@ -121,50 +121,6 @@ study = StudyDefinition(
             },
         },
     ),
-    practice_deprivation_pctile=patients.registered_practice_as_of(
-        "index_date",
-        returning="rct__germdefence__deprivation_pctile",
-        return_expectations={
-            "rate": "universal",
-            "category": {
-                "ratios": {"1": 0.5, "2": 0.5},
-            },
-        },
-    ),
-    practice_imd_decile=patients.registered_practice_as_of(
-        "index_date",
-        returning="rct__germdefence__imd_decile",
-        return_expectations={
-            "rate": "universal",
-            "category": {
-                "ratios": {"1": 0.5, "2": 0.5},
-            },
-        },
-    ),
-    practice_mean_age=patients.registered_practice_as_of(
-        "index_date",
-        returning="rct__germdefence__mean_age",
-        return_expectations={
-            "rate": "universal",
-            "int": {"distribution": "population_ages"},
-        },
-    ),
-    practice_median_age=patients.registered_practice_as_of(
-        "index_date",
-        returning="rct__germdefence__median_age",
-        return_expectations={
-            "rate": "universal",
-            "int": {"distribution": "population_ages"},
-        },
-    ),
-    practice_total_visit_time_mean=patients.registered_practice_as_of(
-        "index_date",
-        returning="rct__germdefence__total_visit_time_mean",
-        return_expectations={
-            "rate": "universal",
-            "int": {"distribution": "normal", "mean": 6, "stddev": 3},
-        },
-    ),
     rural_urban=patients.address_as_of(
         "index_date",
         returning="rural_urban_classification",
@@ -185,6 +141,12 @@ study = StudyDefinition(
             },
         },
     ),
+    index_of_multiple_deprivation=patients.address_as_of(
+        "index_date",
+        returning="index_of_multiple_deprivation",
+        round_to_nearest=100,
+        return_expectations={"category": {"ratios": {1000: 0.5, 2000: 0.5}}},
+    ),
     imd=patients.categorised_as(
         {
             "0": "DEFAULT",
@@ -194,11 +156,6 @@ study = StudyDefinition(
             "4": """index_of_multiple_deprivation >= 32844*3/5 AND index_of_multiple_deprivation < 32844*4/5""",
             "5": """index_of_multiple_deprivation >= 32844*4/5 AND index_of_multiple_deprivation < 32844""",
         },
-        index_of_multiple_deprivation=patients.address_as_of(
-            "index_date",
-            returning="index_of_multiple_deprivation",
-            round_to_nearest=100,
-        ),
         return_expectations={
             "rate": "universal",
             "category": {
