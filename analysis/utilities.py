@@ -35,9 +35,13 @@ def match_input_files(file: str) -> bool:
     pattern = r"^input_20\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\.feather"
     return True if re.match(pattern, file) else False
 
+
 def match_input_files_filtered(file: str) -> bool:
-    pattern = r"^input_filtered_20\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\.feather"
+    pattern = (
+        r"^input_filtered_20\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\.feather"
+    )
     return True if re.match(pattern, file) else False
+
 
 def match_egfr_files(file: str) -> bool:
     """Checks if file name has format outputted by cohort extractor"""
@@ -62,6 +66,7 @@ def get_date_input_file(file: str) -> str:
         date = result = re.search(r"input_(.*)\.feather", file)
         return date.group(1)
 
+
 def get_date_input_file_filtered(file: str) -> str:
     """Gets the date in format YYYY-MM-DD from input file name string"""
     # check format
@@ -71,6 +76,7 @@ def get_date_input_file_filtered(file: str) -> str:
     else:
         date = result = re.search(r"input_filtered_(.*)\.feather", file)
         return date.group(1)
+
 
 def get_date_egfr_file(file: str) -> str:
     """Gets the date in format YYYY-MM-DD from input file name string"""
@@ -1015,3 +1021,72 @@ def update_demographics(demographics_df, df):
         df[demographics_df.columns]
     ).drop_duplicates(subset="patient_id", keep="last")
     return demographics_df
+
+
+def get_practice_characteristics(df, date: str):
+    """Takes an input file and returns a df with the following practice characteristics:
+    List size, region, rural/urban classification, imd, proportion of patients over 65.
+
+    Args:
+        df: patient level input df with the following columns: 'practice', 'registered', 'region', 'imd', 'rural_urban', 'age'
+        date: index date for input df
+    Returns:
+        Practice level df of characteristics for in individual monthly input file
+    """
+
+    # apply function for proportion over 65. Pass age column
+    def prop_over_65(column):
+        num = len(column)
+        over_65 = len(column[column.values > 65])
+
+        return over_65 / num
+
+    # apply function to find modal value in column
+    def get_mode(column):
+        values, counts = np.unique(column, return_counts=True)
+        m = counts.argmax()
+        return values[m]
+
+    practice_list_sizes = (
+        df.groupby(by=["practice"])[["registered"]]
+        .count()
+        .reset_index()
+        .rename(columns={"registered": "list_size"})
+    )
+
+    # imd - mean
+    df["index_of_multiple_deprivation"] = df["index_of_multiple_deprivation"].astype(
+        float
+    )
+    practice_imd = (
+        df.groupby(by=["practice"])[["index_of_multiple_deprivation"]]
+        .mean()
+        .reset_index()
+    )
+
+    # region
+    practice_region = df.groupby(by=["practice"])[["region"]].apply(get_mode)
+    practice_region.name = "region"
+    practice_region = practice_region.reset_index()
+
+    # rural urban
+    practice_rural_urban = df.groupby(by=["practice"])[["rural_urban"]].apply(get_mode)
+    practice_rural_urban.name = "rural_urban"
+    practice_rural_urban = practice_rural_urban.reset_index()
+
+    # over 65
+    practice_over_65 = df.groupby(by=["practice"])[["age"]].apply(prop_over_65)
+    practice_over_65.name = "prop_over_65"
+    practice_over_65 = practice_over_65.reset_index()
+
+    # merge on practice id
+    practice_characteristics = (
+        practice_list_sizes.merge(practice_region, on=["practice"], how="outer")
+        .merge(practice_rural_urban, on=["practice"], how="outer")
+        .merge(practice_over_65, on=["practice"], how="outer")
+        .merge(practice_imd, on=["practice"], how="outer")
+    )
+
+    practice_characteristics["date"] = date
+
+    return practice_characteristics
