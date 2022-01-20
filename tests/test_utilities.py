@@ -73,6 +73,16 @@ def input_file():
             "msoa": pd.Series(
                 ["E02003251", "E02003251", "E02003251", "E02002586", "E02002586"]
             ),
+            "practice": pd.Series([0, 1, 2, 0, 1]),
+            "registered": pd.Series([1, 1, 1, 1, 1]),
+            "region": pd.Series(
+                ["London", "South East", "North West", "London", "South East"]
+            ),
+            "rural_urban": pd.Series(["0", "1", "0", "0", "1"]),
+            "age": pd.Series([70, 40, 30, 80, 20]),
+            "index_of_multiple_deprivation": pd.Series(
+                ["1000", "1000", "2000", "2000", "2000"]
+            ),
         }
     )
 
