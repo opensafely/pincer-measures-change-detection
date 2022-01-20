@@ -64,6 +64,7 @@ measure_quarterly_summary = measure_data %>%
               max = max( value, na.rm = TRUE ),
               mean = mean( value, na.rm = TRUE ),
               median = median( value, na.rm = TRUE ),
+              sd = sd( value, na.rm = TRUE ),
               n_missing = sum(is.na(value)),
               n_total = n() )
 
