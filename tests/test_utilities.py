@@ -79,7 +79,7 @@ def input_file():
                 ["London", "South East", "North West", "London", "South East"]
             ),
             "rural_urban": pd.Series(["0", "1", "0", "0", "1"]),
-            "age": pd.Series([70, 40, 30, 80, 20]),
+            "age": pd.Series([70, 40, 30, 40, 20]),
             "index_of_multiple_deprivation": pd.Series(
                 ["1000", "1000", "2000", "2000", "2000"]
             ),
@@ -430,5 +430,24 @@ def test_group_low_values(composite_indicator_table):
         }
     )
     exp["date"] = pd.to_datetime(exp["date"])
+
+    testing.assert_frame_equal(obs, exp)
+
+
+def test_get_practice_characteristics(input_file):
+
+    obs = utilities.get_practice_characteristics(input_file, "2020-01-01")
+
+    exp = pd.DataFrame(
+        {
+            "practice": pd.Series([0, 1, 2]),
+            "list_size": pd.Series([2, 2, 1]),
+            "region": pd.Series(["London", "South East", "North West"]),
+            "rural_urban": pd.Series(["0", "1", "0"]),
+            "prop_over_65": pd.Series([0.5, 0.0, 0.0]),
+            "index_of_multiple_deprivation": pd.Series([1500.0, 1500.0, 2000.0]),
+            "date": pd.Series(["2020-01-01", "2020-01-01", "2020-01-01"]),
+        }
+    )
 
     testing.assert_frame_equal(obs, exp)
