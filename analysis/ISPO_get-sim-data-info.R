@@ -73,5 +73,5 @@ if ( !dir.exists( output_dir ) ) {
   dir.create(output_dir, showWarnings = FALSE)
 }
 
-write.csv(measure_monthly_summary  , file=glue("{output_dir}/ISPO_s-data_monthly.csv"  ))
-write.csv(measure_quarterly_summary, file=glue("{output_dir}/ISPO_s-data_quarterly.csv"))
+write.csv(measure_monthly_summary  , file=glue("{output_dir}/ISPO_sidata_monthly.csv"  ))
+write.csv(measure_quarterly_summary, file=glue("{output_dir}/ISPO_sidata_quarterly.csv"))

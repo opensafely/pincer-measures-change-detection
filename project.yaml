@@ -274,7 +274,7 @@ actions:
     needs: [generate_measures]
     outputs:
       moderately_sensitive:
-        summary_csvs: output/indicator_saturation/simulated_data/ISPO_s-data_*.csv
+        summary_csvs: output/indicator_saturation/simulated_data/ISPO_sidata_*.csv
 
   run_tests:
     run: python:latest python -m pytest --junit-xml=output/pytest.xml --verbose
