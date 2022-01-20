@@ -20,8 +20,9 @@ arguments <- commandArgs(trailingOnly = TRUE)
 # arguments[3] = "output/indicator_saturation/simulated-data"
 
 input_dir  = arguments[1]
-input_file = arguments[2]
-output_dir = arguments[3]
+output_dir = arguments[2]
+
+input_file = "measure_indicator_(.*)_rate.csv"
 
 measure_data = tibble()
 
