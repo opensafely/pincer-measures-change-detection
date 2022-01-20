@@ -20,9 +20,9 @@ arguments <- commandArgs(trailingOnly = TRUE)
 # arguments[3] = "output/indicator_saturation/simulated-data"
 
 input_dir  = arguments[1]
-input_file = arguments[2]
-output_dir = arguments[3]
+output_dir = arguments[2]
 
+input_file = "measure_indicator_(.*)_rate.csv"
 
 measure_data = tibble()
 
@@ -73,5 +73,5 @@ if ( !dir.exists( output_dir ) ) {
   dir.create(output_dir, showWarnings = FALSE)
 }
 
-write.csv(measure_monthly_summary  , file=glue("{output_dir}/ISPO_siminfo_monthly.csv"  ))
-write.csv(measure_quarterly_summary, file=glue("{output_dir}/ISPO_siminfo_quarterly.csv"))
+write.csv(measure_monthly_summary  , file=glue("{output_dir}/ISPO_get_sim_data_info_monthly.csv"  ))
+write.csv(measure_quarterly_summary, file=glue("{output_dir}/ISPO_get_sim_data_info_quarterly.csv"))
