@@ -8,7 +8,7 @@ library(ggplot2)
 
 ### <%> pwd
 ### To run on the command line:
-### <%> Rscript analysis/ISPO_get-sim-data-info.R output "measure_indicator_(.*)_rate.csv" output/indicator_saturation/simulated-data
+### <%> Rscript analysis/ISPO_get-sim-data-info.R output "measure_indicator_(.*)_rate.csv" output/indicator_saturation
 ### /Users/lisahopcroft/Work/Projects/PINCER/pincer-measures-change-detection
 
 ##### Retrive arguments from Python command
@@ -73,5 +73,5 @@ if ( !dir.exists( output_dir ) ) {
   dir.create(output_dir, showWarnings = FALSE)
 }
 
-write.csv(measure_monthly_summary  , file=glue("{output_dir}/ISPO_sidata_monthly.csv"  ))
-write.csv(measure_quarterly_summary, file=glue("{output_dir}/ISPO_sidata_quarterly.csv"))
+write.csv(measure_monthly_summary  , file=glue("{output_dir}/ISPO_simdata_monthly.csv"  ))
+write.csv(measure_quarterly_summary, file=glue("{output_dir}/ISPO_simdata_quarterly.csv"))
